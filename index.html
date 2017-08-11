@@ -20,19 +20,26 @@
 		<div class="col-md-3">
 		</div>
 		<div class="col-md-3 content">
-			<img src="placeholder" width= "60%" height= "200px">
+			<img id="image" src="hangmanfree.png" width= "60%" height= "200px">
 		</div>
 		<div class="col-md-3 content">
 
-			<p> PRESS ANY KEY TO GET STARTED!<span id=""></span></p>
-			<p> WINS!!!<span id=""></span></p>
-			<p id="winCount"></p>
+			<h2> PRESS ANY KEY TO GET STARTED!</h2>
+
+			<h3> WINS!!!</h3>
+			<p><span id="winCounter"></span></p>
+			
+			<h3> Losses!!!</h3>
+			<p><span id="lossCounter"></span></p>
+
 			<p> CURRENT WORD</p>
-			<p id="current"></p>
+			<p id="wordToGuess">_ _ _ _ _ _ _ _</p>
+
 			<p>NUMBER OF GUESSES REMAINING</p>
-			<p id="guessCount">12</p>
+			<p id="guessCount"><span id="numGuesses"></span></p>
+
 			<p>LETTERS ALREADY USED</p>
-			<P id="used"></P>
+			<P id="used"><span id="wrongGuesses"></span></P>
 			
 		<div class="col-md-3">
 		
@@ -46,8 +53,9 @@
             <p class="col-md-12 footer-text"><a href="https://github.com/branns/Hangman-Game">
             <i class="fa fa-github fa-2x" aria-hidden="true"></i> Brooks Rodriguez</a></p>
         </div>
-    </footer>	
+    </footer>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="./assets/javascript/game.js"></script>	
 </body>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="./assets/javascript/game.js"></script>
+
 </html>

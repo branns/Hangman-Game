@@ -1,205 +1,203 @@
-$(document).ready(function() {
+//GLOBAL VARIABLES
+//---------------------------------------
+// Used to record how many times a letter can be pressed
+var alphabet = ['a','b','c',
+				  'd','e','f',
+				  'g','h','i',
+				  'j','k','l',
+				  'm','n','o',
+				  'p','q','r',
+				  's','t','u',
+				  'v','w','x',
+				  'y','z'];
+//Holds the all the words
+var wordBank =['spurs','horse','cowhand','wanted','saloon','noose','duel', 'west', 'gold', 'carriage'
+				, 'saddle', 'whiskey', 'revolver', 'cattle', 'desert', 'tumbleweed'];
+//Holds choosenWord
+var choosenWord = "";
+//Holds letters in word
+var lettersInWord = [];
+//Holds number of blanks in word
+var numBlanks = 0;
+//Holds Blanks and successful guesses
+var spaceCounter =[];
+//Holds Wrong guesses
+var wrongLetters = [];
+//Counters
+var winCount = 0;
+var loseCount = 0;
+var guessesLeft = 12;
+var rightGuessCounter = 0;
+//FUNCTIONS
+//----------------------------------------
+function reset()
+{
+	//Chooses word randombly from the wordBank
+	choosenWord = wordBank[Math.floor(Math.random() * wordBank.length)];
+	//Splits the choosen word into individual letters
+	lettersInWord = choosenWord.split('');
+	//Get the number of blanks
+	numBlanks = lettersInWord.length;
+	
+	//RESET
+	//===========================================================
+	letterGuessed = 0;
+	rightGuessCounter = 0;
+	guessesLeft = 12;
+	wrongLetters =[];
+	spaceCounter =[];
+	alphabet = ['a','b','c',
+					  'd','e','f',
+					  'g','h','i',
+					  'j','k','l',
+					  'm','n','o',
+					  'p','q','r',
+					  's','t','u',
+					  'v','w','x',
+					  'y','z'];
+	test=false;
+	startGame();
+}
+function startGame()
+{
+	//Chooses word randombly from the wordBank
+	choosenWord = wordBank[Math.floor(Math.random() * wordBank.length)];
+	//Splits the choosen word into individual letters
+	lettersInWord = choosenWord.split('');
+	//Get the number of blanks
+	numBlanks = lettersInWord.length;
+	
+	//RESET
+	//===========================================================
+	rightGuessCounter = 0;
+	guessesLeft = 12;
+	wrongLetters =[];
+	blanksAndSuccesses =[];
+	alphabet = ['a','b','c',
+					  'd','e','f',
+					  'g','h','i',
+					  'j','k','l',
+					  'm','n','o',
+					  'p','q','r',
+					  's','t','u',
+					  'v','w','x',
+					  'y','z'];
 
-  var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
-        'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-        't', 'u', 'v', 'w', 'x', 'y', 'z'];
-  
-  var categories;         // Array of topics
-  var chosenCategory;     // Selected catagory
-  var word ;              // Selected word
-  var guess ;             // Geuss
-  var geusses = [ ];      // Stored geusses
-  var lives ;             // Lives
-  var counter ;           // Count correct geusses
-  var space;              // Number of spaces in word '-'
+	//Populate blanks
+	for(var i = 0; i< numBlanks; i++)
+	{
+		spaceCounter.push('_');
+		document.getElementById('wordToGuess').innerHTML = spaceCounter;
+	}
 
-  // Get elements
-  var showLives = document.getElementById("mylives");
-  var showCatagory = document.getElementById("scatagory");
-  
-
-    for (var i = 0; i < alphabet.length; i++) {
-      letters.id = 'alphabet';
-      list = document.createElement('li');
-      list.id = 'letter';
-      list.innerHTML = alphabet[i];
-      check();
-      letters.appendChild(list);
-    }
-  }
-     
-  // Select Catagory
-  var selectCat = function () {
-    if (chosenCategory === categories[0]) {
-      catagoryName.innerHTML = "Food";
-    } else if (chosenCategory === categories[1]) {
-      catagoryName.innerHTML = "Animals";
-    } else if (chosenCategory === categories[2]) {
-      catagoryName.innerHTML = "Capital Cities";
-    }
-  }
-
-  // Create geusses ul
-   result = function () {
-    wordHolder = document.getElementById('hold');
-    correct = document.createElement('ul');
-
-    for (var i = 0; i < word.length; i++) {
-      correct.setAttribute('id', 'my-word');
-      guess = document.createElement('li');
-      guess.setAttribute('id', 'guess');
-      if (word[i] === "-") {
-        guess.innerHTML = "-";
-        space = 1;
-      } else {
-        guess.innerHTML = "_";
-      }
-
-      geusses.push(guess);
-      wordHolder.appendChild(correct);
-      correct.appendChild(guess);
-    }
-  }
-  
-  // Show lives
-   comments = function () {
-    showLives.innerHTML = "You have " + lives + " lives";
-    if (lives < 1) {
-      showLives.innerHTML = "Game Over";
-    }
-    for (var i = 0; i < geusses.length; i++) {
-      if (counter + space === geusses.length) {
-        showLives.innerHTML = "You Win!";
-      }
-    }
-  }
-
-      // Animate man
-  var animate = function () {
-    var drawMe = lives ;
-    drawArray[drawMe]();
-  }
-
-  
-   // Hangman
-  canvas =  function(){
-
-    myStickman = document.getElementById("stickman");
-    context = myStickman.getContext('2d');
-    context.beginPath();
-    context.strokeStyle = "#fff";
-    context.lineWidth = 2;
-  };
-  
-    head = function(){
-      myStickman = document.getElementById("stickman");
-      context = myStickman.getContext('2d');
-      context.beginPath();
-      context.arc(60, 25, 10, 0, Math.PI*2, true);
-      context.stroke();
-    }
-    
-  draw = function($pathFromx, $pathFromy, $pathTox, $pathToy) {
-    
-    context.moveTo($pathFromx, $pathFromy);
-    context.lineTo($pathTox, $pathToy);
-    context.stroke(); 
+	//Changes HTML 
+	document.getElementById('wordToGuess').innerHTML = spaceCounter.join(' ');
+	document.getElementById('numGuesses').innerHTML = guessesLeft;
+	document.getElementById('winCounter').innerHTML = winCount;
+	document.getElementById('lossCounter').innerHTML = loseCount;
+	document.getElementById('wrongGuesses').innerHTML = wrongLetters;
+	// Testing / Debugging
+	console.log(choosenWord);
+	console.log(lettersInWord);
+	console.log(numBlanks);
+	console.log(spaceCounter);
 }
 
-   frame1 = function() {
-     draw (0, 150, 150, 150);
-   };
-   
-   frame2 = function() {
-     draw (10, 0, 10, 600);
-   };
-  
-   frame3 = function() {
-     draw (0, 5, 70, 5);
-   };
-  
-   frame4 = function() {
-     draw (60, 5, 60, 15);
-   };
-  
-   torso = function() {
-     draw (60, 36, 60, 70);
-   };
-  
-   rightArm = function() {
-     draw (60, 46, 100, 50);
-   };
-  
-   leftArm = function() {
-     draw (60, 46, 20, 50);
-   };
-  
-   rightLeg = function() {
-     draw (60, 70, 100, 100);
-   };
-  
-   leftLeg = function() {
-     draw (60, 70, 20, 100);
-   };
-  
-  drawArray = [rightLeg, leftLeg, rightArm, leftArm,  torso,  head, frame4, frame3, frame2, frame1]; 
+function compareLetters(userKey)
+{
+				console.log('WORKING!');
+				//If user key exist in choosen word then perform this function 
+				if(choosenWord.indexOf(userKey) > -1)
+				{
+					//Loops depending on the amount of blanks 
+					for(var i = 0; i < numBlanks; i++)
+					{
+						//Fills in right index with user key
+						if(lettersInWord[i] === userKey)
+						{
+							rightGuessCounter++;
+							spaceCounter[i] = userKey;
+							document.getElementById('wordToGuess').innerHTML = spaceCounter.join(' ');
+						}	
+					}
+					//Test / Debug
+					console.log(spaceCounter);
+				}
+				//Wrong Keys
+				else
+				{
+					wrongLetters.push(userKey);
+					guessesLeft--;
+					//Changes HTML
+					document.getElementById('numGuesses').innerHTML = guessesLeft;
+					document.getElementById('wrongGuesses').innerHTML = wrongLetters;
+					//Test / Debug
+					console.log('Wrong Letters = ' + wrongLetters);
+					console.log('Guesses left are ' + guessesLeft);
+				}
+			
+			
+		
+}
+	//audio for win/lose
+	var audioElement = document.createElement("audio");
+      audioElement.setAttribute("src", "../blues-brothers-rawhide_21eNzQl.mp3");
 
+	var audioElement = document.createElement("audio");
+      audioElement.setAttribute("src", "../goodbadugly-whistle-long.mp3");
 
-  // OnClick Function
-   check = function () {
-    list.onclick = function () {
-      var geuss = (this.innerHTML);
-      this.setAttribute("class", "active");
-      this.onclick = null;
-      for (var i = 0; i < word.length; i++) {
-        if (word[i] === geuss) {
-          geusses[i].innerHTML = geuss;
-          counter += 1;
-        } 
-      }
-      var j = (word.indexOf(geuss));
-      if (j === -1) {
-        lives -= 1;
-        comments();
-        animate();
-      } else {
-        comments();
-      }
-    }
-  }
-  
-    
-  // Play categories
-  play = function () {
-    categories = [
-        ["everton", "liverpool", "swansea", "chelsea", "hull", "manchester-city", "newcastle-united"],
-        ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"],
-        ["des moines", "austin", "", "amsterdam", "prague"]
-    ];
+     //images for win/lose
+     
+function winLose()
+{
+	// When number blanks if filled with right words then you win
+	if(rightGuessCounter === numBlanks)
+	{
+		//Counts Wins 
+		winCount++;
+		//Changes HTML
+		document.getElementById('winCounter').innerHTML = winCount;
+		//grab image
+		img('i');
+		//play song
 
-    chosenCategory = categories[Math.floor(Math.random() * categories.length)];
-    word = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
-    word = word.replace(/\s/g, "-");
-    console.log(word);
-    buttons();
+		reset();
+	}
+	// When number of Guesses reaches 0 then You lose
+	else if(guessesLeft === 0)
+	{
+		//Counts losses
+		loseCount++;
+		//Changes HTML
+		document.getElementById('lossCounter').innerHTML = loseCount;
+		//grab image
+		('You Lose');
+		//play song
+		reset();
+	}
+}
 
-    geusses = [ ];
-    lives = 10;
-    counter = 0;
-    space = 0;
-    result();
-    comments();
-    selectCat();
-    canvas();
-  }
+//MAIN PROCCESS
+//-------------------------------------------	
+//Initiates the Code
+startGame();
 
-	 // Reset
+document.onkeyup = function(event)
+{
+	test = true;
+	var letterGuessed = event.key;
+	for(var i = 0; i < alphabet.length; i++)
+	{	
+		if(letterGuessed === alphabet[i] && test === true)
+		{
+			var spliceDword = alphabet.splice(i,1);
+			//Test / Debug
+			console.log('Double word is = ' + alphabet[i])
+			console.log('Spliced Word is = ' + spliceDword);
 
-  document.getElementById('reset').onclick = function() {
-    correct.parentNode.removeChild(correct);
-    letters.parentNode.removeChild(letters);
-    showClue.innerHTML = "";
-    context.clearRect(0, 0, 400, 400);
-    play();
-  }
+			compareLetters(letterGuessed);
+			winLose();
+		}
+	}		
+		
 }
