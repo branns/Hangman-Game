@@ -1,0 +1,21 @@
+* {
+	box-sizing: border-box;
+}
+body {
+	background-image: url(../images/ghosttown2.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+    background-color: #cccccc;
+    font: bold 20px times;
+}
+.jumbotron.jumbotron-fluid {
+	text-align: center;
+	background-color: #dacfc5;
+	border: 8px dotted black;
+}
+.col-md-3.content {
+	background-color: #dacfc5;
+	border: 8px dotted black;
+	height: 500px;
+	text-align: center;
+}
