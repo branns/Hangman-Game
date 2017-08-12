@@ -1,4 +1,5 @@
-//GLOBAL VARIABLES
+$(document).ready(function() {
+//VARIABLES
 //---------------------------------------
 // Used to record how many times a letter can be pressed
 var alphabet = ['a','b','c',
@@ -11,8 +12,8 @@ var alphabet = ['a','b','c',
 				  'v','w','x',
 				  'y','z'];
 //Holds the all the words
-var wordBank =['spurs','horse','cowhand','wanted','saloon','noose','duel', 'west', 'gold', 'carriage'
-				, 'saddle', 'whiskey', 'revolver', 'cattle', 'desert', 'tumbleweed'];
+var wordBank =['carriage','spurs','boots', 'revolver','noose','cowhand','saddle', 'cattle', 'west', 'gold', 
+				'indians', 'wanted'];
 //Holds choosenWord
 var choosenWord = "";
 //Holds letters in word
@@ -20,7 +21,7 @@ var lettersInWord = [];
 //Holds number of blanks in word
 var numBlanks = 0;
 //Holds Blanks and successful guesses
-var spaceCounter =[];
+var winCounter =[];
 //Holds Wrong guesses
 var wrongLetters = [];
 //Counters
@@ -28,11 +29,15 @@ var winCount = 0;
 var loseCount = 0;
 var guessesLeft = 12;
 var rightGuessCounter = 0;
+var audioElement = document.createElement("audio");
+      audioElement.setAttribute("src", "goodbadugly-whistle-long.mp3");
+var audioElement1 = document.createElement("audio");
+      audioElement.setAttribute("src", "blues-brothers-rawhide_21eNzQl.mp3");
 //FUNCTIONS
 //----------------------------------------
 function reset()
 {
-	//Chooses word randombly from the wordBank
+	//Chooses word randomly from the wordBank
 	choosenWord = wordBank[Math.floor(Math.random() * wordBank.length)];
 	//Splits the choosen word into individual letters
 	lettersInWord = choosenWord.split('');
@@ -45,7 +50,7 @@ function reset()
 	rightGuessCounter = 0;
 	guessesLeft = 12;
 	wrongLetters =[];
-	spaceCounter =[];
+	winCounter =[];
 	alphabet = ['a','b','c',
 					  'd','e','f',
 					  'g','h','i',
@@ -60,7 +65,7 @@ function reset()
 }
 function startGame()
 {
-	//Chooses word randombly from the wordBank
+	//Chooses word randomly from the wordBank
 	choosenWord = wordBank[Math.floor(Math.random() * wordBank.length)];
 	//Splits the choosen word into individual letters
 	lettersInWord = choosenWord.split('');
@@ -72,7 +77,7 @@ function startGame()
 	rightGuessCounter = 0;
 	guessesLeft = 12;
 	wrongLetters =[];
-	blanksAndSuccesses =[];
+	winCounter =[];
 	alphabet = ['a','b','c',
 					  'd','e','f',
 					  'g','h','i',
@@ -86,12 +91,12 @@ function startGame()
 	//Populate blanks
 	for(var i = 0; i< numBlanks; i++)
 	{
-		spaceCounter.push('_');
-		document.getElementById('wordToGuess').innerHTML = spaceCounter;
+		winCounter.push('_');
+		document.getElementById('wordToGuess').innerHTML = winCounter;
 	}
 
 	//Changes HTML 
-	document.getElementById('wordToGuess').innerHTML = spaceCounter.join(' ');
+	document.getElementById('wordToGuess').innerHTML = winCounter.join(' ');
 	document.getElementById('numGuesses').innerHTML = guessesLeft;
 	document.getElementById('winCounter').innerHTML = winCount;
 	document.getElementById('lossCounter').innerHTML = loseCount;
@@ -100,7 +105,7 @@ function startGame()
 	console.log(choosenWord);
 	console.log(lettersInWord);
 	console.log(numBlanks);
-	console.log(spaceCounter);
+	console.log(winCounter);
 }
 
 function compareLetters(userKey)
@@ -116,12 +121,12 @@ function compareLetters(userKey)
 						if(lettersInWord[i] === userKey)
 						{
 							rightGuessCounter++;
-							spaceCounter[i] = userKey;
-							document.getElementById('wordToGuess').innerHTML = spaceCounter.join(' ');
+							winCounter[i] = userKey;
+							document.getElementById('wordToGuess').innerHTML = winCounter.join(' ');
 						}	
 					}
 					//Test / Debug
-					console.log(spaceCounter);
+					console.log(winCounter);
 				}
 				//Wrong Keys
 				else
@@ -139,15 +144,6 @@ function compareLetters(userKey)
 			
 		
 }
-	//audio for win/lose
-	var audioElement = document.createElement("audio");
-      audioElement.setAttribute("src", "../blues-brothers-rawhide_21eNzQl.mp3");
-
-	var audioElement = document.createElement("audio");
-      audioElement.setAttribute("src", "../goodbadugly-whistle-long.mp3");
-
-     //images for win/lose
-     
 function winLose()
 {
 	// When number blanks if filled with right words then you win
@@ -157,10 +153,7 @@ function winLose()
 		winCount++;
 		//Changes HTML
 		document.getElementById('winCounter').innerHTML = winCount;
-		//grab image
-		img('i');
-		//play song
-
+		alert('You Win');
 		reset();
 	}
 	// When number of Guesses reaches 0 then You lose
@@ -170,9 +163,7 @@ function winLose()
 		loseCount++;
 		//Changes HTML
 		document.getElementById('lossCounter').innerHTML = loseCount;
-		//grab image
-		('You Lose');
-		//play song
+		alert('You Lose');
 		reset();
 	}
 }
@@ -201,3 +192,6 @@ document.onkeyup = function(event)
 	}		
 		
 }
+});
+		
+
